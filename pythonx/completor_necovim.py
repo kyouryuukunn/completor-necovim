@@ -19,7 +19,6 @@ class Necovim(Completor):
     ident = r"""[a-zA-Z0-9#:_]+$"""
 
     def parse(self, base):
-        print(base)
         if not self.ft or not base:
             return []
         start = self.start_column()
@@ -42,5 +41,4 @@ class Necovim(Completor):
             for c in candidates:
                 c['abbr'] = c['word']
                 c['word'] = c['word'][prefix:]
-        print(kw)
         return candidates
