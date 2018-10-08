@@ -41,7 +41,7 @@ class Necovim(Completor):
         } for item in gather_candidates(binput_data, bkw)[:]
               if item[b'word'].startswith(kw.encode('utf-8'))]
 
-        index = base.rfind(kw)
+        index = match.start()
         start_column = self.start_column()
         prefix = start_column - index
         if prefix > 0:
