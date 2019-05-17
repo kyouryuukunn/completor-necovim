@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import logging, re, itertools
+import logging
+import re
+import itertools
 from completor import Completor, vim, get_encoding
 from completor.compat import to_bytes, to_unicode
 from completers.common.utils import test_subseq, LIMIT
@@ -8,6 +10,7 @@ from completers.common.utils import test_subseq, LIMIT
 _cache = {}
 
 logger = logging.getLogger('completor')
+
 
 class Necovim(Completor):
     filetype = 'vim'
@@ -22,7 +25,7 @@ class Necovim(Completor):
 
         candidates = gather_candidates(binput_data, bbase)
         for entry in candidates:
-            score = test_subseq(base, to_unicode(entry['word'], 'utf-8'))
+            score = test_subseq(base, to_unicode(entry[b'word'], 'utf-8'))
             if score is None:
                 continue
             yield entry, score
@@ -45,7 +48,8 @@ class Necovim(Completor):
 
         kw = match.group()
 
-        items = list(itertools.islice(itertools.chain(self.gen_entry(kw)), LIMIT))
+        items = list(itertools.islice(
+            itertools.chain(self.gen_entry(kw)), LIMIT))
         items.sort(key=lambda x: x[1])
 
         index = match.start()
@@ -55,12 +59,12 @@ class Necovim(Completor):
             prefix = 0
 
         ret = []
-        for item in items:
+        for item, _ in items:
             ret.append({
-                'word':item[0]['word'][prefix:],
-                'abbr':item[0]['word'],
-                'dub':1,
-                'menu':'[vim]'
+                'word': item[b'word'][prefix:],
+                'abbr': item[b'word'],
+                'dub': 1,
+                'menu': '[vim]'
             })
 
         return ret
