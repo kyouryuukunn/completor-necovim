@@ -3,9 +3,9 @@
 import logging
 import re
 import itertools
-from completor import Completor, vim, get_encoding
+from completor import Completor, vim, get_encoding, LIMIT
 from completor.compat import to_bytes, to_unicode
-from completers.common.utils import test_subseq, LIMIT
+from completers.common.utils import test_subseq
 
 _cache = {}
 
@@ -47,6 +47,8 @@ class Necovim(Completor):
             return []
 
         kw = match.group()
+        if len(kw) < self.get_option('min_chars'):
+            return []
 
         items = list(itertools.islice(
             itertools.chain(self.gen_entry(kw)), LIMIT))
