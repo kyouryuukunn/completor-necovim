@@ -55,6 +55,7 @@ class Necovim(Completor):
         items.sort(key=lambda x: x[1])
 
         index = match.start()
+        index = len(to_bytes(self.cursor_line[:index], get_encoding()))
         start_column = self.start_column()
         prefix = start_column - index
         if prefix < 0:
